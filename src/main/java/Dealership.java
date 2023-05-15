@@ -15,27 +15,27 @@ public class Dealership {
         this.inventory = inventory;
     }
 
-    public List<Vehicle> getVehiclesByPrice(double min, double max){
+    public List<Vehicle> getVehiclesByPrice(double min, double max) {
         return null;
     }
 
-    public List<Vehicle> getVehiclesByMakeModel(String make, String model){
+    public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
         return null;
     }
 
-    public List<Vehicle> getVehiclesByColor(String color){
+    public List<Vehicle> getVehiclesByColor(String color) {
         return null;
     }
 
-    public List<Vehicle> getVehiclesByMileage(int min, int max){
+    public List<Vehicle> getVehiclesByMileage(int min, int max) {
         return null;
     }
 
-    public List<Vehicle> getVehiclesByType(String vehicleType){
+    public List<Vehicle> getVehiclesByType(String vehicleType) {
         return null;
     }
 
-    public List<Vehicle> getAllVehicles(){
+    public List<Vehicle> getAllVehicles() {
         return inventory;
     }
 
@@ -43,7 +43,14 @@ public class Dealership {
         inventory.add(anotherVehicle);
     }
 
-    public void removeVehicle(Vehicle anotherVehicle){
+    public void removeVehicle(Vehicle anotherVehicle) {
         inventory.remove(anotherVehicle);
     }
+    // Reads ledger file into ArrayList
+    private int loadAllFromFile() throws IOException {
+        String s;
+        while ((s = ledgerFileReader.readLine()) != null) {
+            Transaction t = fromFileText(s);
+            transactions.add(t);
+
 }
