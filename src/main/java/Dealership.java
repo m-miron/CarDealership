@@ -47,10 +47,5 @@ public class Dealership {
         inventory.remove(anotherVehicle);
     }
     // Reads ledger file into ArrayList
-    private int loadAllFromFile() throws IOException {
-        String s;
-        while ((s = ledgerFileReader.readLine()) != null) {
-            Transaction t = fromFileText(s);
-            transactions.add(t);
 
 }
