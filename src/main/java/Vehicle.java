@@ -82,4 +82,10 @@ public class Vehicle {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public String vehicleListFormat() {
+        return String.format("%-15d %-15s %-15s %-15d %-15s %-15s %-15d %-25.2f",
+        vin, color, vehicleType, year, make, model, odometer, price);
+    }
+
 }
