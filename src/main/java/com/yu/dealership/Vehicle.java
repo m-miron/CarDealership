@@ -1,14 +1,16 @@
+package com.yu.dealership;
+
 public class Vehicle {
     private int vin;
+    private String color;
+    private String vehicleType;
     private int year;
     private String make;
     private String model;
-    private String vehicleType;
-    private String color;
     private int odometer;
     private double price;
 
-    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
+    public Vehicle(int vin, String color, String vehicleType, int year, String make, String model, int odometer, double price) {
         this.vin = vin;
         this.year = year;
         this.make = make;

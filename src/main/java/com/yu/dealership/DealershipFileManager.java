@@ -1,14 +1,18 @@
+package com.yu.dealership;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class DealershipFileManager {
 
-    //        private final ArrayList<Vehicle> vehiclesList = new ArrayList<>();
+    public static String dealershipFileName = "01-DealershipVehicleList";
+    //        private final ArrayList<com.yu.dealership.Vehicle> vehiclesList = new ArrayList<>();
     public Dealership getDealership() {
         try {
             // To open the dealership file for reading
-            String dealershipFileName = "01-DealershipVehicleList";
             BufferedReader dealershipFileReader = new BufferedReader(new FileReader(dealershipFileName));
 
             // To extract dealership information (name, address, phone)
@@ -18,7 +22,7 @@ public class DealershipFileManager {
             String address = dealershipDetails[1];
             String phone = dealershipDetails[2];
 
-            // Create a new Dealership object with the extracted information
+            // Create a new com.yu.dealership.Dealership object with the extracted information
             Dealership anotherDealership = new Dealership(name, address, phone);
 
 
@@ -36,16 +40,16 @@ public class DealershipFileManager {
                     String color = vehicleDetails[5];
                     int odometer = Integer.parseInt(vehicleDetails[6]);
                     double price = Double.parseDouble(vehicleDetails[7]);
-                    // Create a new Vehicle object with the extracted information
-                    Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
-                    // Add the Vehicle object to the Dealership's inventory
+                    // Create a new com.yu.dealership.Vehicle object with the extracted information
+                    Vehicle vehicle = new Vehicle(vin, color, vehicleType, year, make, model,odometer, price);
+                    // Add the com.yu.dealership.Vehicle object to the com.yu.dealership.Dealership's inventory
                     anotherDealership.addVehicle(vehicle);
                 }
             }
 
             dealershipFileReader.close();
 
-            return anotherDealership;// Return the newly constructed Dealership object
+            return anotherDealership;// Return the newly constructed com.yu.dealership.Dealership object
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -55,5 +59,26 @@ public class DealershipFileManager {
 
     public void saveDealership(Dealership anotherDealership) {
         //TODO: Implement logic for saving a new dealership.
+        try (FileWriter fileWriter = new FileWriter(dealershipFileName, true)) {
+            List<Vehicle> vehicles = anotherDealership.getAllVehicles();
+            for (Vehicle vehicle : vehicles) {
+            fileWriter.write(String.format("%d|%s|%s|%d|%s|%s|%d|.2f\n",
+            vehicle.getVin(),
+            vehicle.getColor(),
+            vehicle.getVehicleType(),
+            vehicle.getYear(),
+            vehicle.getMake(),
+            vehicle.getModel(),
+            vehicle.getOdometer(),
+            vehicle.getPrice()));
+
+            fileWriter.write(vehicle.vehicleListFormat());
+            fileWriter.flush();
+            fileWriter.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

@@ -1,3 +1,5 @@
+package com.yu.dealership;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,58 +9,88 @@ public class UserInterface {
     private Dealership dealership;
     public static Scanner userInput = new Scanner(System.in);
 
+
     public void display() {
         init();
-        //loop
         while (true) {
             displayMainMenu();
             return;
-        }//go to beginning of loop?
+        }
     }
 
     private void init() {
         DealershipFileManager dealershipFileManager = new DealershipFileManager();
         this.dealership = dealershipFileManager.getDealership();
-        //return?
     }
 
     private void displayMainMenu() {
-        System.out.println("""
-                -------------------- Dealership Menu --------------------\s
-                        
-                Welcome! Please enter an option below (number only):
-                        
-                1   Vehicles by Price
-                2   Vehicles by Make and Model
-                3   Vehicles by Year
-                4   Vehicles by Color
-                5   Vehicles by Mileage
-                6   Vehicles by Type
-                7   All Vehicles
-                8   Add Vehicle
-                9   Remove Vehicle
-                0   Exit  \s
-                                
-                ---------------------------------------------------------\s
-                        
-                Go to:  \s""");
-        String usersInput = userInput.nextLine();
-//        System.out.println("\n---------------------------------------------------------\n");
-        switch (usersInput) {
-            case "1" -> processGetByPriceRequest();
-            case "2" -> processGetByMakeModelRequest();
-            case "3" -> processGetByYearRequest();
-            case "4" -> processGetByColorRequest();
-            case "5" -> processGetByMileageRequest();
-            case "6" -> processGetByVehicleTypeRequest();
-            case "7" -> processGetAllVehiclesRequest();
-            case "8" -> processAddVehicleRequest();
-            case "9" -> processRemoveVehicleRequest();
-            case "0" -> {
-                System.out.println("Good-bye.");
-                System.exit(0);
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("""
+                    -------------------- Dealership Menu --------------------\s
+                            
+                    Welcome! Please enter an option below (number only):
+                            
+                    1   Vehicles by Price
+                    2   Vehicles by Make and Model
+                    3   Vehicles by Year
+                    4   Vehicles by Color
+                    5   Vehicles by Mileage
+                    6   Vehicles by Type
+                    7   All Vehicles
+                    8   Add com.yu.dealership.Vehicle
+                    9   Remove com.yu.dealership.Vehicle
+                    0   Exit  \s
+                                    
+                    ---------------------------------------------------------\s
+                            
+                    Go to:  \s""");
+            String usersInput = userInput.nextLine();
+            switch (usersInput) {
+                case "1" -> {
+                    processGetByPriceRequest();
+                    exit = returnToMenu();
+                }
+                case "2" -> {
+                    processGetByMakeModelRequest();
+                    exit = returnToMenu();
+                }
+                case "3" -> {
+                    processGetByYearRequest();
+                    exit = returnToMenu();
+                }
+                case "4" -> {
+                    processGetByColorRequest();
+                    exit = returnToMenu();
+                }
+                case "5" -> {
+                    processGetByMileageRequest();
+                    exit = returnToMenu();
+                }
+                case "6" -> {
+                    processGetByVehicleTypeRequest();
+                    exit = returnToMenu();
+                }
+                case "7" -> {
+                    processGetAllVehiclesRequest();
+                    exit = returnToMenu();
+                }
+                case "8" -> {
+                    processAddVehicleRequest();
+                    exit = returnToMenu();
+                }
+                case "9" -> {
+                    processRemoveVehicleRequest();
+                    exit = returnToMenu();
+                }
+                case "0" -> {
+                    System.out.println("Good-bye.");
+                    exit = true;
+                }
+                default -> {
+                }
             }
-            default -> System.out.println("Invalid entry. Please try again.");
         }
     }
 
@@ -111,6 +143,7 @@ public class UserInterface {
         int oldestYearInput = userInput.nextInt();
         System.out.println("Enter newest year: ");
         int newestYearInput = userInput.nextInt();
+        userInput.nextLine();
         horizontalLine();
         String title = "SEARCH BY YEAR";
         titleLine(title, 110);
@@ -151,7 +184,6 @@ public class UserInterface {
         int minMileageInput = userInput.nextInt();
         System.out.println("Enter maximum mileage: ");
         int maxMileageInput = userInput.nextInt();
-        horizontalLine();
         horizontalLine();
         String title = "SEARCH BY MILEAGE";
         titleLine(title, 110);
@@ -194,10 +226,65 @@ public class UserInterface {
 
     private void processAddVehicleRequest() {
         //TODO: Input logic for adding a vehicle
+        System.out.println("To Add a com.yu.dealership.Vehicle ");
+
+        System.out.print("Enter the 9-digit VIN: ");
+        int vinInput = userInput.nextInt();
+        userInput.nextLine();
+
+        System.out.print("Enter the color: ");
+        String colorInput = userInput.nextLine();
+
+        System.out.print("Enter the vehicle type: ");
+        String vehicleTypeInput = userInput.nextLine();
+
+        System.out.print("Enter the year: ");
+        int yearInput = userInput.nextInt();
+        userInput.nextLine();
+
+        System.out.print("Enter the make: ");
+        String makeInput = userInput.nextLine();
+
+        System.out.print("Enter the model: ");
+        String modelInput = userInput.nextLine();
+
+        System.out.print("Enter the mileage: ");
+        int mileageInput = userInput.nextInt();
+        userInput.nextLine();
+
+        System.out.print("Enter the price: ");
+        double priceInput = userInput.nextDouble();
+        userInput.nextLine();
+
+        Vehicle vehicle = new Vehicle(vinInput, colorInput, vehicleTypeInput, yearInput, makeInput, modelInput, mileageInput, priceInput);
+        dealership.addVehicle(vehicle);
+
+        System.out.println("com.yu.dealership.Vehicle added successfully.");
+        DealershipFileManager dealershipFileManager = new DealershipFileManager();
+        dealershipFileManager.saveDealership(dealership);
     }
 
     private void processRemoveVehicleRequest() {
         //TODO: Input logic for removing a vehicle
+        System.out.println("To remove a vehicle: enter its VIN.");
+        int vin = userInput.nextInt();
+        userInput.nextLine();
+
+        Vehicle vehicleEntered = null;
+        for (Vehicle vehicle : dealership.getAllVehicles()) {
+            if (vehicle.getVin() == vin) {
+                vehicleEntered = vehicle;
+                break;
+            }
+        }
+        if (vehicleEntered != null) {
+            dealership.removeVehicle(vehicleEntered);
+            System.out.println("com.yu.dealership.Vehicle removed.");
+            DealershipFileManager dealershipFileManager = new DealershipFileManager();
+            dealershipFileManager.saveDealership(dealership);
+        } else {
+            noMatch();
+        }
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
@@ -209,7 +296,6 @@ public class UserInterface {
             String vehiclesListFormat = vehicle.vehicleListFormat();
             System.out.println(vehiclesListFormat);
         }
-        horizontalLine();
     }
 
     private void horizontalLine() {
@@ -233,6 +319,14 @@ public class UserInterface {
 
     private void noMatch() {
         System.out.println("None found.");
+        returnToMenu();
+    }
+
+    private boolean returnToMenu() {
+        horizontalLine();
+        System.out.println("\nEnter any number when you would like to return to the menu.");
+        String usersInput = userInput.nextLine();
+        return usersInput.equalsIgnoreCase("");
     }
 
 }
