@@ -39,8 +39,8 @@ public class UserInterface {
                     5   Vehicles by Mileage
                     6   Vehicles by Type
                     7   All Vehicles
-                    8   Add com.yu.dealership.Vehicle
-                    9   Remove com.yu.dealership.Vehicle
+                    8   Add Vehicle
+                    9   Remove Vehicle
                     0   Exit  \s
                                     
                     ---------------------------------------------------------\s
@@ -226,7 +226,7 @@ public class UserInterface {
 
     private void processAddVehicleRequest() {
         //TODO: Input logic for adding a vehicle
-        System.out.println("To Add a com.yu.dealership.Vehicle ");
+        System.out.println("Add a Vehicle: ");
 
         System.out.print("Enter the 9-digit VIN: ");
         int vinInput = userInput.nextInt();
@@ -259,7 +259,7 @@ public class UserInterface {
         Vehicle vehicle = new Vehicle(vinInput, colorInput, vehicleTypeInput, yearInput, makeInput, modelInput, mileageInput, priceInput);
         dealership.addVehicle(vehicle);
 
-        System.out.println("com.yu.dealership.Vehicle added successfully.");
+        System.out.println("Vehicle added successfully.");
         DealershipFileManager dealershipFileManager = new DealershipFileManager();
         dealershipFileManager.saveDealership(dealership);
     }
@@ -279,7 +279,7 @@ public class UserInterface {
         }
         if (vehicleEntered != null) {
             dealership.removeVehicle(vehicleEntered);
-            System.out.println("com.yu.dealership.Vehicle removed.");
+            System.out.println("Vehicle removed.");
             DealershipFileManager dealershipFileManager = new DealershipFileManager();
             dealershipFileManager.saveDealership(dealership);
         } else {
