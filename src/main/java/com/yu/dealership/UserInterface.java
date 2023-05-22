@@ -41,6 +41,7 @@ public class UserInterface {
                     7   All Vehicles
                     8   Add Vehicle
                     9   Remove Vehicle
+                    10  Sell/Lease Vehicle
                     0   Exit  \s
                                     
                     ---------------------------------------------------------\s
@@ -82,6 +83,10 @@ public class UserInterface {
                 }
                 case "9" -> {
                     processRemoveVehicleRequest();
+                    exit = returnToMenu();
+                }
+                case "10" -> {
+                    processSellOrLeaseRequest();
                     exit = returnToMenu();
                 }
                 case "0" -> {
@@ -285,6 +290,10 @@ public class UserInterface {
         } else {
             noMatch();
         }
+    }
+
+    private void processSellOrLeaseRequest(){
+        System.out.println("Not Ready. :(");
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
