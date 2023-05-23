@@ -1,5 +1,6 @@
 package com.yu.dealership;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -291,9 +292,29 @@ public class UserInterface {
             noMatch();
         }
     }
-
+    public boolean financed;
+    Contract contract;
     private void processSellOrLeaseRequest(){
-        System.out.println("Not Ready. :(");
+//        System.out.println("Not Ready. :(");
+        contract = null;
+        horizontalLine();
+        LocalDate LocalDate = java.time.LocalDate.now();
+        System.out.print("Enter full name: ");
+        String customerName = userInput.nextLine();
+        System.out.print("Enter e-mail address: ");
+        String customerEmail = userInput.nextLine();
+
+        SalesContract anotherSalesContract = new SalesContract(
+                contract.getContractDate(), contract.getCustomerName(), contract.getCustomerEmail(), contract.getVehicle());
+        String financingChoice;
+        System.out.println("Will you be financing the vehicle? (Y/N)");
+        financingChoice = userInput.nextLine().toUpperCase();
+        financed = financingChoice.equals("Y");
+        double monthlyPayment = anotherSalesContract.getMonthlyPayment();
+        if (financed == true){
+            horizontalLine();
+            System.out.println("Monthly Payment: " + monthlyPayment);
+        }
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
