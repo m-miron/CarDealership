@@ -101,7 +101,7 @@ public class Dealership {
             if (vehicle.getVin() == vin) {
             matchingVehicles.add(vehicle);
             }
-        } return matchingVehicles;
+        } return null;
 
     }
     public List<Vehicle> getAllVehicles() {
