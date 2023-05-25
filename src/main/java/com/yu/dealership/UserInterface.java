@@ -1,6 +1,7 @@
 package com.yu.dealership;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,6 +9,7 @@ public class UserInterface {
 
 
     private Dealership dealership;
+    private ContractFileManager contractManager;
     public static Scanner userInput = new Scanner(System.in);
 
 
@@ -22,6 +24,7 @@ public class UserInterface {
     private void init() {
         DealershipFileManager dealershipFileManager = new DealershipFileManager();
         this.dealership = dealershipFileManager.getDealership();
+        contractManager = new ContractFileManager();
     }
 
     private void displayMainMenu() {
@@ -298,23 +301,46 @@ public class UserInterface {
 //        System.out.println("Not Ready. :(");
         contract = null;
         horizontalLine();
-        LocalDate LocalDate = java.time.LocalDate.now();
+        System.out.println("Let's prepare a contract.");
+
+        LocalDate currentDate = java.time.LocalDate.now();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String contractDate = currentDate.format(df);
+
         System.out.print("Enter full name: ");
         String customerName = userInput.nextLine();
         System.out.print("Enter e-mail address: ");
         String customerEmail = userInput.nextLine();
 
-        SalesContract anotherSalesContract = new SalesContract(
-                contract.getContractDate(), contract.getCustomerName(), contract.getCustomerEmail(), contract.getVehicle());
-        String financingChoice;
-        System.out.println("Will you be financing the vehicle? (Y/N)");
-        financingChoice = userInput.nextLine().toUpperCase();
-        financed = financingChoice.equals("Y");
-        double monthlyPayment = anotherSalesContract.getMonthlyPayment();
-        if (financed == true){
-            horizontalLine();
-            System.out.println("Monthly Payment: " + monthlyPayment);
+        System.out.println("Leasing or purchasing?");
+        String userChoice = userInput.nextLine().toUpperCase();
+
+        if(userChoice.equals("LEASING")) {
+            System.out.println("Enter VIN: ");
+            Integer vehicleChosen = userInput.nextInt();
+            userInput.nextLine();
+            Vehicle v = dealership.getVehiclesByVin(vehicleChosen);
+            LeaseContract lc = new LeaseContract(contractDate, customerName, customerEmail, v);
+            double monthlyPayment = lc.getMonthlyPayment();
+            System.out.println("All set. Monthly payment is " + monthlyPayment);
+            contractManager.saveContract(lc);
+            dealership.removeVehicle(v);
         }
+        else {
+            System.out.println("Invalid entry.");
+        }
+
+//        SalesContract anotherSalesContract = new SalesContract(
+//                contract.getContractDate(), contract.getCustomerName(), contract.getCustomerEmail(), contract.getVehicle());
+//        String financingChoice;
+//        System.out.println("Will you be financing the vehicle? (Y/N)");
+//        financingChoice = userInput.nextLine().toUpperCase();
+//        financed = financingChoice.equals("Y");
+//        double monthlyPayment = anotherSalesContract.getMonthlyPayment();
+//        if (financed == true){
+//            horizontalLine();
+//            System.out.println("Monthly Payment: " + monthlyPayment);
+//        }
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {

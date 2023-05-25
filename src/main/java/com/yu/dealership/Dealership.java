@@ -94,6 +94,16 @@ public class Dealership {
 
     }
 
+    public Vehicle getVehiclesByVin(int vin) {
+        List <Vehicle> matchingVehicles = new ArrayList<>();
+
+        for (Vehicle vehicle : inventory) {
+            if (vehicle.getVin() == vin) {
+            matchingVehicles.add(vehicle);
+            }
+        } return matchingVehicles;
+
+    }
     public List<Vehicle> getAllVehicles() {
         return inventory;
     }
