@@ -95,15 +95,14 @@ public class Dealership {
     }
 
     public Vehicle getVehiclesByVin(int vin) {
-        List <Vehicle> matchingVehicles = new ArrayList<>();
-
         for (Vehicle vehicle : inventory) {
             if (vehicle.getVin() == vin) {
-            matchingVehicles.add(vehicle);
+                return vehicle;
             }
-        } return null;
-
+        }
+        return null; // Vehicle with the specified VIN was not found
     }
+
     public List<Vehicle> getAllVehicles() {
         return inventory;
     }
